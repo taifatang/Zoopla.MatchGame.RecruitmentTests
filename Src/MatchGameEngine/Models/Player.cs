@@ -13,6 +13,7 @@ namespace MatchGameEngine.Models
             Name = name;
             _cards = new List<Card>();
         }
+        //A bit Domain driven here to prevent player adding cards to themselves
         public void Win(IEnumerable<Card> cards)
         {
             _cards.AddRange(cards);
