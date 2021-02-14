@@ -7,11 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A07A0471
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{FF5A8FDB-B075-4D84-A310-4CF50DAA9835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchGameUI", "Src\MatchGameUI\MatchGameUI.csproj", "{62BD131F-EE36-4AE0-A38E-2DBEF7E5D5B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchGameUI", "Src\MatchGameUI\MatchGameUI.csproj", "{62BD131F-EE36-4AE0-A38E-2DBEF7E5D5B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchGameEngine", "Src\MatchGameEngine\MatchGameEngine.csproj", "{05AC2279-D690-413E-9DD1-2A02D981C915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchGameEngine", "Src\MatchGameEngine\MatchGameEngine.csproj", "{05AC2279-D690-413E-9DD1-2A02D981C915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchGameEngine.UnitTests", "Tests\MatchGameEngine.UnitTests\MatchGameEngine.UnitTests.csproj", "{52CE5DAE-812E-4811-A880-1DF0B9E26CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchGameEngine.UnitTests", "Tests\MatchGameEngine.UnitTests\MatchGameEngine.UnitTests.csproj", "{52CE5DAE-812E-4811-A880-1DF0B9E26CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchGameEngine.IntergrationTests", "Tests\MatchGameEngine.IntergrationTests\MatchGameEngine.IntergrationTests.csproj", "{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{52CE5DAE-812E-4811-A880-1DF0B9E26CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52CE5DAE-812E-4811-A880-1DF0B9E26CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52CE5DAE-812E-4811-A880-1DF0B9E26CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{62BD131F-EE36-4AE0-A38E-2DBEF7E5D5B9} = {FF5A8FDB-B075-4D84-A310-4CF50DAA9835}
 		{05AC2279-D690-413E-9DD1-2A02D981C915} = {FF5A8FDB-B075-4D84-A310-4CF50DAA9835}
 		{52CE5DAE-812E-4811-A880-1DF0B9E26CD0} = {A07A0471-9C20-422B-8E6B-C02BD321EFEF}
+		{19609D29-B25D-4CFB-9AD6-F9FF71A0F19B} = {A07A0471-9C20-422B-8E6B-C02BD321EFEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35F269A4-3AF9-44FF-B190-A57FB91350C3}
