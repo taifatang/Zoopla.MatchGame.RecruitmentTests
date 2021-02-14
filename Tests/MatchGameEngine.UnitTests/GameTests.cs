@@ -12,23 +12,23 @@ namespace MatchGameEngine.UnitTests
     {
         private Mock<IDeckProvider> _deckProvider;
         private Mock<IMatchRule> _matchingRulemock;
-        private Game game;
+        private Game _game;
 
-        private Player playerA;
-        private Player playerB;
+        private Player _playerA;
+        private Player _playerB;
 
         [SetUp]
         public void SetUp()
         {
-            playerA = new Player("playerA");
-            playerB = new Player("playerB");
+            _playerA = new Player("playerA");
+            _playerB = new Player("playerB");
             var numberOfDecks = 1;
 
             _matchingRulemock = new Mock<IMatchRule>();
             _deckProvider = new Mock<IDeckProvider>();
 
-            game = new Game(_deckProvider.Object, new GameConfiguration(playerA,
-                playerB,
+            _game = new Game(_deckProvider.Object, new GameConfiguration(_playerA,
+                _playerB,
                 numberOfDecks,
                 _matchingRulemock.Object));
 
@@ -45,13 +45,13 @@ namespace MatchGameEngine.UnitTests
             };
             _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(deckWithOddNumberOfCards);
 
-            var result = game.Play();
+            var result = _game.Play();
 
-            var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
+            var expectedWinner = _playerA.Cards.Count > _playerB.Cards.Count ? _playerA : _playerB;
             result.Status.Should().Be(Status.Victory);
             result.Winner.Should().Be(expectedWinner);
-            playerA.Cards.Should().NotBeEmpty();
-            playerB.Cards.Should().NotBeEmpty();
+            _playerA.Cards.Should().NotBeEmpty();
+            _playerB.Cards.Should().NotBeEmpty();
         }
 
         [Test]
@@ -64,9 +64,9 @@ namespace MatchGameEngine.UnitTests
                 new Card(Suit.Clubs, CardValue.Three),
             });
 
-            var result = game.Play();
+            var result = _game.Play();
 
-            var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
+            var expectedWinner = _playerA.Cards.Count > _playerB.Cards.Count ? _playerA : _playerB;
             result.Winner.Should().Be(expectedWinner);
             _matchingRulemock.Verify(x => x.Match(It.IsAny<Card>(), It.IsAny<Card>()));
         }
@@ -76,16 +76,16 @@ namespace MatchGameEngine.UnitTests
         [TestCase(3, 156)]
         public void Game_Play_UseNumberOfDecksSpecified(int deckCount, int expectedNumberOfCards)
         {
-            game = new Game(_deckProvider.Object, new GameConfiguration(playerA,
-                playerB,
+            _game = new Game(_deckProvider.Object, new GameConfiguration(_playerA,
+                _playerB,
                 deckCount,
                 _matchingRulemock.Object));
             _deckProvider.Setup(x => x.GetCards(deckCount)).Returns(GenerateTestDeck(deckCount));
 
-            game.Play();
+            _game.Play();
 
             _deckProvider.Verify(x => x.GetCards(deckCount), Times.Once);
-            (playerA.Cards.Count + playerB.Cards.Count).Should().Be(expectedNumberOfCards);
+            (_playerA.Cards.Count + _playerB.Cards.Count).Should().Be(expectedNumberOfCards);
         }
 
         [Test]
@@ -93,9 +93,9 @@ namespace MatchGameEngine.UnitTests
         {
             _matchingRulemock.Setup(x => x.Match(It.IsAny<Card>(), It.IsAny<Card>())).Returns(false);
             
-            var result = game.Play();
+            var result = _game.Play();
 
-            playerA.Cards.Count.Should().Be(playerB.Cards.Count);
+            _playerA.Cards.Count.Should().Be(_playerB.Cards.Count);
             result.Status.Should().Be(Status.Draw);
             result.Winner.Should().BeNull();
         }

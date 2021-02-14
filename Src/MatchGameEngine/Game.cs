@@ -7,40 +7,40 @@ namespace MatchGameEngine
     public class Game
     {
         private readonly IDeckProvider _deckProvider;
-        private readonly GameConfiguration configuration;
+        private readonly GameConfiguration _configuration;
 
         private LinkedList<Card> _cardsPlayed;
 
         public Game(IDeckProvider deckProvider, GameConfiguration configuration)
         {
             _deckProvider = deckProvider;
-            this.configuration = configuration;
+            _configuration = configuration;
             _cardsPlayed = new LinkedList<Card>();
         }
 
         public GameResult Play()
         {
-            var cards = _deckProvider.GetCards(configuration.DecksCount);
+            var cards = _deckProvider.GetCards(_configuration.DecksCount);
 
             foreach (var card in cards)
             {
                 _cardsPlayed.AddLast(new LinkedListNode<Card>(card));
 
-                if (configuration.MatchRule.Match(_cardsPlayed.Last.Value, card))
+                if (_configuration.MatchRule.Match(_cardsPlayed.Last.Value, card))
                 {
                     RandomlyAssignWinner();
                     _cardsPlayed.Clear();
                 }
             }
 
-            if (configuration.PlayerA.Cards.Count == configuration.PlayerB.Cards.Count)
+            if (_configuration.PlayerA.Cards.Count == _configuration.PlayerB.Cards.Count)
             {
                 return GameResult.Draw();
             }
 
-            var winner = configuration.PlayerA.Cards.Count > configuration.PlayerB.Cards.Count
-                ? configuration.PlayerA
-                : configuration.PlayerB;
+            var winner = _configuration.PlayerA.Cards.Count > _configuration.PlayerB.Cards.Count
+                ? _configuration.PlayerA
+                : _configuration.PlayerB;
 
             return GameResult.Victory(winner);
         }
@@ -51,11 +51,11 @@ namespace MatchGameEngine
 
             if (random.Next(0, 10) % 2 == 0)
             {
-                configuration.PlayerA.Win(_cardsPlayed);
+                _configuration.PlayerA.Win(_cardsPlayed);
             }
             else
             {
-                configuration.PlayerB.Win(_cardsPlayed);
+                _configuration.PlayerB.Win(_cardsPlayed);
             }
         }
     }
