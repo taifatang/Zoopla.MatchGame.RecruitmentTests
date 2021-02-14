@@ -1,6 +1,6 @@
 ﻿namespace MatchGameEngine.Models
 {
-    public struct Card
+    public class Card
     {
         public Suit Suit { get;  }
         public CardValue Value { get;  }

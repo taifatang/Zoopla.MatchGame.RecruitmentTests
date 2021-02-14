@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MatchGameEngine;
+using MatchGameEngine.MatchRules;
+using MatchGameEngine.Models;
+using System;
 
 namespace MatchGameUI
 {
@@ -22,6 +25,22 @@ namespace MatchGameUI
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            var Bob = new Player("Bob");
+            var Alice = new Player("Alice");
+
+            var game = new Game(new ShuffledDeckProvider(), new GameConfiguration(
+                Bob,
+                Alice,
+                1,
+                new ValueAndSuitMatchRule()));
+
+            var result = game.Play();
+
+            Console.WriteLine($"Status {result.Status} " +
+                $": {result.Winner.Name}:{result.Winner.Cards.Count}");
+
+            Console.ReadKey();
         }
     }
 }

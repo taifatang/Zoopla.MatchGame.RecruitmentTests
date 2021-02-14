@@ -6,33 +6,57 @@ namespace MatchGameEngine
 {
     public class Game
     {
-        private IDeckProvider deckProvider;
+        private readonly IDeckProvider _deckProvider;
+        private readonly GameConfiguration configuration;
 
-        public Game(IDeckProvider deckProvider)
+        private LinkedList<Card> _cardsPlayed;
+
+        public Game(IDeckProvider deckProvider, GameConfiguration configuration)
         {
-            this.deckProvider = deckProvider;
+            _deckProvider = deckProvider;
+            this.configuration = configuration;
+            _cardsPlayed = new LinkedList<Card>();
         }
 
-        public Player Play(Player[] players)
+        public GameResult Play()
         {
-            var cards = deckProvider.GetCards(1);
+            var cards = _deckProvider.GetCards(configuration.DecksCount);
 
-            foreach(var card in cards)
+            foreach (var card in cards)
             {
-                var random = new Random();
+                _cardsPlayed.AddLast(new LinkedListNode<Card>(card));
 
-                if (random.Next(0, 10) % 2 == 0)
+                if (configuration.MatchRule.Match(_cardsPlayed.Last.Value, card))
                 {
-                    players[0].Win(new [] { card });
-                }
-                else
-                {
-                    players[1].Win(new [] { card });
+                    RandomlyAssignWinner();
+                    _cardsPlayed.Clear();
                 }
             }
 
-            return players[0].Cards.Count > players[1].Cards.Count ? players[0] : players[1];
+            if (configuration.PlayerA.Cards.Count == configuration.PlayerB.Cards.Count)
+            {
+                return GameResult.Draw();
+            }
+
+            var winner = configuration.PlayerA.Cards.Count > configuration.PlayerB.Cards.Count
+                ? configuration.PlayerA
+                : configuration.PlayerB;
+
+            return GameResult.Victory(winner);
         }
 
+        private void RandomlyAssignWinner()
+        {
+            var random = new Random();
+
+            if (random.Next(0, 10) % 2 == 0)
+            {
+                configuration.PlayerA.Win(_cardsPlayed);
+            }
+            else
+            {
+                configuration.PlayerB.Win(_cardsPlayed);
+            }
+        }
     }
 }
