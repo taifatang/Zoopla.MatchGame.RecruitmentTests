@@ -16,36 +16,40 @@ namespace MatchGameEngine.UnitTests
 
         private Player playerA;
         private Player playerB;
-        private List<Card> cards;
 
         [SetUp]
         public void SetUp()
         {
-            playerA = new Player();
-            playerB = new Player();
-            cards = new List<Card>(Deck.Standard);
-
+            playerA = new Player("playerA");
+            playerB = new Player("playerB");
+            var numberOfDecks = 1;
 
             _matchingRulemock = new Mock<IMatchRule>();
             _deckProvider = new Mock<IDeckProvider>();
 
             game = new Game(_deckProvider.Object, new GameConfiguration(playerA,
                 playerB,
-                1,
+                numberOfDecks,
                 _matchingRulemock.Object));
 
-            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(GenerateTestDeck(1));
+            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(GenerateTestDeck(numberOfDecks));
             _matchingRulemock.Setup(x => x.Match(It.IsAny<Card>(), It.IsAny<Card>())).Returns(true);
         }
 
         [Test]
         public void Game_Play_ReturnsWinner()
         {
+            var deckWithOddNumberOfCards = new List<Card>(Deck.Standard)
+            {
+                new Card(Suit.Clubs, CardValue.Ace),
+            };
+            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(deckWithOddNumberOfCards);
+
             var result = game.Play();
 
             var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
-            result.Winner.Should().Be(expectedWinner);
             result.Status.Should().Be(Status.Victory);
+            result.Winner.Should().Be(expectedWinner);
             playerA.Cards.Should().NotBeEmpty();
             playerB.Cards.Should().NotBeEmpty();
         }
@@ -53,12 +57,17 @@ namespace MatchGameEngine.UnitTests
         [Test]
         public void Game_Play_UseMatchingRulesToDetermineWinner()
         {
+            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(new List<Card>
+            {
+                new Card(Suit.Clubs, CardValue.Ace),
+                new Card(Suit.Clubs, CardValue.Two),
+                new Card(Suit.Clubs, CardValue.Three),
+            });
+
             var result = game.Play();
 
             var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
             result.Winner.Should().Be(expectedWinner);
-            playerA.Cards.Should().NotBeEmpty();
-            playerB.Cards.Should().NotBeEmpty();
             _matchingRulemock.Verify(x => x.Match(It.IsAny<Card>(), It.IsAny<Card>()));
         }
 
