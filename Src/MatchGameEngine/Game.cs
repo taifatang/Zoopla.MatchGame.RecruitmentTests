@@ -15,7 +15,7 @@ namespace MatchGameEngine
 
         public Player Play(Player[] players)
         {
-            var cards = deckProvider.GetDeck();
+            var cards = deckProvider.GetCards(1);
 
             foreach(var card in cards)
             {

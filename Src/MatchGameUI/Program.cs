@@ -19,7 +19,6 @@ namespace MatchGameUI
          * Player with most cards win, draw is possible
          */
 
-        //start 0006
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");

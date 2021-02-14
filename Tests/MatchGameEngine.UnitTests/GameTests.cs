@@ -27,7 +27,7 @@ namespace MatchGameEngine.UnitTests
         [Test]
         public void Game_Play_ReturnsWinner()
         {
-            _deckProvider.Setup(x => x.GetDeck()).Returns(new System.Collections.Generic.List<Card>()
+            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(new System.Collections.Generic.List<Card>()
             {
                 new Card(),
                 new Card(),
@@ -38,6 +38,27 @@ namespace MatchGameEngine.UnitTests
                 new Card()
             });
 
+            var winner = game.Play(new[] { playerA, playerB });
+
+            var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
+            winner.Should().Be(expectedWinner);
+            playerA.Cards.Should().NotBeEmpty();
+            playerB.Cards.Should().NotBeEmpty();
+        }
+
+        [Test]
+        public void Game_Play_UseMatchingRulesToDetermineWinner()
+        {
+            _deckProvider.Setup(x => x.GetCards(It.IsAny<int>())).Returns(new System.Collections.Generic.List<Card>()
+            {
+                new Card(),
+                new Card(),
+                new Card(),
+                new Card(),
+                new Card(),
+                new Card(),
+                new Card()
+            });
             var winner = game.Play(new[] { playerA, playerB });
 
             var expectedWinner = playerA.Cards.Count > playerB.Cards.Count ? playerA : playerB;
