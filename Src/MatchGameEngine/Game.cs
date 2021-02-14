@@ -30,9 +30,8 @@ namespace MatchGameEngine
                     players[1].Win(new [] { card });
                 }
             }
-          
 
-            return players[0];
+            return players[0].Cards.Count > players[1].Cards.Count ? players[0] : players[1];
         }
 
     }
